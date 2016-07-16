@@ -1,0 +1,61 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>README.txt</title>
+<meta name="GENERATOR" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+span {
+	font-family: 'Verdana';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span>What is BlooGee?<br />
+Initially, Bloo Gee was developed as a proof-of-concept work for a simple object model concerning microcontent. Main target is to provide an instrument to establish semantic networks, based on communications between webservers. BlooGee is (for now) a kind of add-on for weblogs an content management systems; it works on any structured content which can be described by a simple model: identifyer, short description (or headline) and extended description (the main content). In this sense, almost any table with text data may be used by BlooGee. It is not intended as a replacement for existing systems, but as add-on for common blog systems to establish communcation based on semantics between different weblogs.<br />
+<br />
+How does BlooGee work?<br />
+In this first version, BlooGee simply provides a kind of desktop interface to exsiting blog content as well as a command shell to access (not only) server functionality. There are some nice features like in-place editing, a lot of AJAX-stuff and some basic tools to test and establish communications between different BlooGees. It basically supports a "site to site" protocol, based on simple HTTP requests. Concerning the content, BlooGee adds a special property to single items: relations between micro content objects. In this sense, BlooGee provides search capabilities which are no longer based on keywords, but on semantics. If a search is done, it still starts with a keyword (and only one single keyword), but then focusses on (user provided) relations between items - on different sites. <br />
+<br />
+BlooGee core functions<br />
+Basically BlooGee adds an abstraction layer for existing content. This layer is strictly embedded into a security layer which controls access to its core command set. BlooGee supports unlimited users, user rights and command rights are expressed as simple numbers:if the command "level" is less or eqaul than the user "level", the command is executed. In this sense, the BlooGee security model may easily be extended or used for own development. And - of course - own commands may be implemented.<br />
+<br />
+Communication between BlooGee servers<br />
+The BlooGee protocoll is inspired by existing peer-to-peer networks. Each time a request is made, lists of known other servers are exchanged between servers. And - of course - search requests are exchanged too. If a site is unreachable (but still up), a semantic network of BlooGees may fetch the content.<br />
+<br />
+What is BlooGee made of?<br />
+BlooGee consists of a set of PHP pages, a system database and a (individual configurable) main content database. Since BlooGee integrates ADODB, it is quite flexible regarding its environment. The surface is based on Scriptaculous and Prototype libraries. For coming versions, PEAR classes will be integrated for generating HTML pages.<br />
+<br />
+Extensibility<br />
+BlooGee provides some simple APIs so it may be easily extended to own needs. Basically it needs an appropiate adaptor for its main content database. Since it is written strictly in the MVC model, BlooGee may easyly be extended with own controllers to set up special functions. <br />
+<br />
+Command shell - VT-100 ;-)<br />
+Originally written as a debugger, the command shell provides terminal like access to BlooGee. It is like "telneting weblogs" and has some interesting features for accessing content and BlooGees system database as well. Using the command shell, a simple webserver may be used like a "HTTP machine" to construct headers, monitor BlooGee activities, fetch and inspect remote sites, filter links from remote sites... <br />
+<br />
+How to use BlooGee<br />
+BlooGee may live in any subdir on the webserver. If configured properly, it provides a nice "blog desktop" with drag 'n drop capabilities, in place editing, user login and a page menu. If the command shell is opened, it provides access to server functions as described. To take full advantage of BlooGee, a change in the model of the content is required: single items have to be "tagged" with keywords and/or the URLs (permalinks) of related items. The more relatives, the more effective the semantic network. And the less the need of "keyword matches" for successful searches...<br />
+<br />
+About this version<br />
+This is the first Version of BlooGee - still below 0.1 ;-) - which has the following capabilities: <br />
+- a full security layer, supporting an <br />
+- abstract layer of basic datbase commands.<br />
+- a full featured command shell to access the <br />
+- basic set of server-to-server protocoll functions; and <br />
+- an AJAX based desktop for blog-style display.<br />
+- Integration of ADODB.<br />
+- A widely open architecture for extensions and third party plugins.<br />
+<br />
+Note: this first version will preferably work on MySQl and Apache. Although a basic difference between system tables and content table is made, both (in this initial version) will have to reside in the same db. Server protocol is limited to basics since there is still a problem with "exploding" requests so the appropiate code parts are more or less "symbolic". This will be fixed in the next version, which also will provide some more database adaptors for common weblog/CM systems (in 0.00f (at this time, there are adaptors for MovableType, Postnuke and Serendipidity).<br />
+<br />
+TODO (for upcoming versions)<br />
+- establish real messaging and search capabilities between BlooGees.<br />
+- handle requests in system db by scripts<br />
+- export selections and results to tiddlers (TiddlyWiki friends - smile!!)<br />
+- and fix a lot of bugs..... ;-))<br />
+<br />
+PLEASE:<br />
+Read MCOM.txt and DEVNOTES.txt before installing BlooGee. USE AT OWN RISK, NO WARRANTIES. And: BACKUP YOUR DATA BEFORE INSTALLION!</span>
+</body>
+</html>

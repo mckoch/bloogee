@@ -1,0 +1,91 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>DEVNOTES.txt</title>
+<meta name="GENERATOR" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+span {
+	font-family: 'Verdana';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span>///////////////////////////////////<br />
+BlooGee Version 0.00f public<br />
+///////////////////////////////////<br />
+<br />
+This is the first version of BlooGee. What is BlooGee?<br />
+<br />
+First of all, BlooGee is not a full blown content management or weblog system. BlooGee is rather a &nbsp;library for displaying and editing existing content from &nbsp;variety of sources. Upon this library and its model you can build highly customizable interfaces to existing structured data produced by commonly used systems as mentioned above. The basic BlooGee wrapper makes extensive use of the famous libraries "Prototype" and "Scriptaculous" which are included with this distribution. You may use BlooGee to search and edit your existing content in a comfortable way, or build an additional "display and edit port" to existing structured data.<br />
+<br />
+What does BlooGee need?<br />
+BlooGee needs the follwing things: a living datasource (basically MySQL with tables from MovableType or Post/PHPNuke, or use your own format, see below), a properly set up Apache, PHP are server side prepositions, the client side will need a common browser with activated JavaScript. (!!This version works properly only using Firefox!!). Just copy the files and directories in the package to a directory of your choice (it should be accessable via Apache...), you may rename index.php as needed. Set up the datasource (which is a high risk at this time, you may loose ALL your tables, or anyone may edit your content...!) , call index.php in your browser. &nbsp;<br />
+<br />
+How does BlooGee work?<br />
+Initially, BlooGee works like a simple weblog - it produces an array which alway has the same structure: {id, title, text, [array $relatives], [array $config]}. If no query string is specified, it takes a default action (selection) from its default plugin and passes the result (the array, see above) to the appropiate wrapper. This wrapper produces the HTML and JavaScript output which is sent to the client. If the basic controller (index.php) receives a query string, it will be examined if it contains block commands. If so, only the first is executed, if not, BlooGee treats the query string as a search term and delivers a collection to the wrapper which will format and return it to the client. BlooGee works with any datasource which has a PHP-accessable API if the appropiate dbadaptor is used. As well BlooGee may produce not only HTML output, but also XML or popular formats like RSS (if the appropiate wrapper is used). <br />
+<br />
+///////////////////////////////////<br />
+What does BlooGee consist of?<br />
+BlooGee consists of a set of clientside scripts and a set of server side PHP scripts. It makes use of AJAX related stuff and is based on a simple object model for microcontent. To construct the wrapper interface, the common libraries Prototype and Scriptaculous are used. <br />
+<br />
+Wrapper<br />
+A wrapper is the HTML part that is initially loaded into the browser. It contains references to JavaScript, CSS and basic HTML. A wrapper is used to put all elements on screen, it is the basic layout template for BlooGee. A wrapper is only loaded on initially calling a BlooGee page and ties together all elements and behaviours, also the wrapper decides which format is used for initial output. <br />
+<br />
+Commands<br />
+BlooGees datasource interface accepts a basic set of shorthands to retrieve content items. These can easily be wrapped into specialised plugins or controller pages. Additionally, they can be passed via GET or POST data to BlooGee. If used with controllers, partial updates are possible (see the example controllers). &nbsp;BlooGee only accepts commands, item ids or keywords as querystring.<br />
+<br />
+Plugins<br />
+Plugins smply control the default behaviour of a BlooGee and are included into index.php. They may be used fo building queries on own specialised block commands. Plugins should pass their output back to index.php, so in most cases a plugin produces a full page output.<br />
+<br />
+Controller<br />
+Unlike plugins, controllers update only parts of the wrapper page. They use block commands, but provide their own formatter. &nbsp;Controller are called "stand alone" (not through index.php), it is up to the wrapper to properly ask for and render a controllers output. Controllers may be small and simple appications (like the search controller), or a full blown application for user registration and management. <br />
+<br />
+DB adaptor<br />
+The datasource adaptor provides the interface between command language and the data. By default, BlooGee uses a MySQL database with MovableType tables. Further versions will contain adaptors for PostNuke/PHPNuke, Serendipidity, Google, Amazon and ebay. By using different adaptors in specialised controllers, several datasources may be combined into one BlooGee page. If the datasource is not on your own server, the dbadator has to provide the correct AJAX calls which will be handled through the &nbsp;client sided wrapper.<br />
+<br />
+///////////////////////////////////<br />
+Messaging<br />
+BlooGees block commands make it highly communicative. If you have the appropiate controller, a remote BlooGee may be queried and even updated. If you have a look at the classes, you will find a basic object which carries information on "per item" or "permalink" basis. For example, a Bloogee may qury other sites and update if something corresponds with an item - for example, if a remote URL is added to the relatives section. The other side may decide whether to store this information to the relatives section of its element, or not. &nbsp;<br />
+<br />
+Notice: in this version 0.01.a messaging is only "implicit", which means there is no special controller for that. Since messaging is one of the basic concepts (and features) of BlooGee, the next version will provide a RPC-like command for remote updating. &nbsp;<br />
+<br />
+///////////////////////////////////<br />
+Installation<br />
+// if you decide to use this version: //<br />
+Copy all files and directories to your webserver. Edit the configuration values for your MySQL database (in this version, you will have to edit the fieldnames in the SQL statements by hand) which will work with nearly any basic CMS table with id, title, text structure. Edit the stylesheets as you need and like. <br />
+// DO NOT provide BlooGee a database user WITH writing permissions!!!!!! //<br />
+// if you cannot change the database user: DO NOT USE ON THE WEB NOW! //<br />
+// this is only an alpha version, use at own full risk. <br />
+// You may use this version to edit local content or use read only datasources.//<br />
+// This is for security reasons; anyone may alter and delete your MySQL database, regardless of edit.php.//<br />
+<br />
+This versions limitations:<br />
+- no real messaging between BlooGees<br />
+- no saving or printing of results<br />
+- no control of user state<br />
+<br />
+///////////////////////////////////<br />
+For further versions... ToDo<br />
+<br />
+Viewports<br />
+Vieports are small HTML/JavaScript templates which the wrapper or controller has to apply on a per item basis, so an item containing a simple link to an avi file or stream may be automatically wrapped into a fully configured player, image viewer or plugin. <br />
+<br />
+Saving lists<br />
+is not possible yet, but will bee soon. And printing as well ;-))<br />
+<br />
+Comments<br />
+For weblog style comments a controller would be fine...<br />
+<br />
+///////////////////////////////////<br />
+Licensing<br />
+BlooGee is licensed under GPL. Donations welcome. &nbsp;Use at own risk and own fun. BlooGee is not for governmental or miltary use.<br />
+<br />
+Dedication<br />
+This work is dedicated to friends who helped me a lot in the past two years. So these are special thanks to rww, dl, mmv, js, ah, hs, hj. &nbsp;And, of course, this is dedicated to my beloved son and his patience with it all.<br />
+<br />
+</span>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MCOM.TXT</title>
+<meta name="GENERATOR" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+span {
+	font-family: 'Verdana';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span>- Micro Content Object Model - <br />
+Abstract &amp; Docmentation, V.01a<br />
+<br />
+Purpose<br />
+This document describes the first version of the Micro Content Onject Model and an abstract class lib MicroContentObject (MCO). It is intended as a paper for thinking about, discussing and using an appropiate model to handle microcontent. This approach does not use keywords to find and glue related pieces of microcontent, it merely focusses - beyond computing relvancy from matching strings on web pages - on the fact that content preferably is linked to "real world" related content and applications, driven by criteria and ideas which are as individual as the context a collection of microcontent represents. Implementing MCOM should benefit the programmer as well as the user by accessing content and appropiate context in one convenient model.<br />
+<br />
+Describing the problem<br />
+After handling microcontent in a variety of environments, I had two recurring experiences: people only want to change small things if their collection (i.e. a news magazine or a corporate website) once has been established. These websites regularly consist of a number of items, displayed in a context (this context is what we usually call the webpage). Sometimes collections of collections have to be arranged and put into a new context, creating thematical pages. Keywords, categories, RSS, commenting - content management consists of a variety of techniques and systems, all describing HOW to display content, but not trying to describe the content itself: While on one hand we have sophisticated models to translate the procedures from the real world into applications to handle whatever content a computer can display, on the other hand we lack of models describing the qualities and semantics of the content itself. Don't panic - this is far from the point of making a program conscious of its tasks. But we are moving one step into the semantics of micro content objects: the relations (here: links from and to) with other micro content objects is made part of the object's properties. In simple words: people always wish to combine and update as well content as application applying their own ideas and criteria. More than that, they are not willing to deal with a programmers view on categorization etc., while they are interested in the main question: how do I get A,B,C and D together on one page? An how do I tell that C relates to F and G, while A and B both relate to F? The answer is quite simple: save the URIs of F and G tgether with A, and tell F and G about that. Then save it along with them. Easy, hm? Not quite. Simple pupose and main question: "These items belong together. How do I tell them?"<br />
+<br />
+What changes?<br />
+By applying the MCOM, you get a model that does not require any new programming language, skills, frameworks or included classes. By applying MCOM you get documents which you may manipulate based on their content's relationships. You may view and "drill down" into content of any MIME type and display content by levels from various sources, all on one dynamic page ("to contain and to be contained"). You get a new descriptor for the network of micro content objects - you even may view informational trees, display all documents along a certain "path" to a certain depth and get a dynamic view on all objects based on their "depth". With MCOM, you can script documents based on their content rather than based on their technical structure. All this can be done using the traditional web programmer's toolbox and is widely based on AJAX style - may be it makes &nbsp;life a little easier by having one page displaying bunchs of content and deep links in one convenient place without ever reloading any new page on whatsoever site.<br />
+<br />
+About this &nbsp;document and version<br />
+As mentioned, this is the initial version of the MCOM and its basic classes. The code published for now uses *Pseudocode* for PHP and JavaScript. AS IS, IT WILL NOT WORK IN ANY PROGRAMMING ENVIRONMENT EXCEPT YOUR BRAIN. But the code should give you a rough idea and taste of the structure, logic and usage of MCOM objects along with common AJAX techniques. <br />
+<br />
+Facts, please!<br />
+If you are in a hurry, just have a look on the &nbsp;basic class code. You will find an MicroContentObject with some properties and three basic methods. The MCO-Model closely corresponds to the DOM and MVC. Objects may be constructed in (at least) any web-orientated OOP-style programming language on client and server (this document uses "quasi" JavaScript/PHP). <br />
+<br />
+If you read the code by now - smile. It is as easy as it seems, really. Remember: it is a change of point of view (hm, eventually a little change in the model data). From there, you simply treat an item (i.e. an entry of a weblog, an article in your favorite online magazine, a picture or sound file on your homepage, a video stream or an item in your favorite online shop) as an object of MicroContent. Several parts of MicroContent together make up a site, an application - or simply a web page with at least one item of content. A starting page consists of a collection of assorted MicroContentObjects. Simple, hm? But take a closer look: each item of MicroContent - each MicroContentObject (MCO) - has a structure to describe itself, including its relations to other MicroContentObjects. This is the clue: essential part of a MCO is its collection of related objects, or better: the URLs of MCOs which link to or from this MCO. It is no matter if these objects reside on a local or foreighn site. A MCO may have a number n of relatives, but at least n=1: the parsing page (of course, a parsing page mainly consists of one MCO referencing other MCOs in its relatives collection). In other words: I always knew what I am linking to, but now I know who is linking to my content!<br />
+<br />
+Back to the MCO class: the first four properties make up 50% of the objects identity: URI, description, content make up the "display version" of an MCO. The feedback URL links to an interface to manipulate the Model (from MVC) of the MCO, i.e. the database which the blog entry is part of. <br />
+<br />
+Another 150% is made by the relatives collection which consists of an array of URLs. Each URL identifies another MCO with its collection of relatives. <br />
+<br />
+Do you get a smell?<br />
+Bingo, with a few lines of code and an object model you can start to display documents made from elements of microcontent in their contentual context. Documents which no longer let you jump from site to site, but show related micro content elements from different sources in one convenient place. Don't worry, each source is original, no copies or caching. You no longer have to go there by yourself - MCOs will do the work for you, all in one browser window. With one click, you can display and click through trees which no longer consist of websites (one after the other) but of numbers of related documents (on one page). Drill down in the tree of a certain document, find out paths between documents which are not linked directly. <br />
+<br />
+Paths?<br />
+Well, I'd rather talk about vectors. These vectors have a starting point A and an end point Z, each one described by an URL. Now, how many and which objects' collections do I need to reach Z from A? May be D and X, since D relates to A and X, and X relates to Z. Additionally, D also relates to F,G and H; X also relates to U,V,F and H. For now, the path between A and Z goes straight along D and X, and if we request and display the documents A,D,X and Z, we already get a pretty page on a certain subject. The subject is described by its path, the vector.<br />
+<br />
+There's more...<br />
+Take a look back at the example: we display the vector by showing the documents lying on it. But what about the relations of elements tackled by our vector? These are F,G,H,U and V. And, if we take a closer look, some of these elements are referenced more than once. But before computing, let's take a look back on the MicroContentObject.<br />
+<br />
+Methods and linking back<br />
+Using the MCO's update method, you may send messages about establishing a relationship to the other MCO. If approbiate, the remote MCO will add the messaging ressource to its relatives collection. Concerning this, in our example a lot of relationships is explicitly missing, since we did not regard the "backlinks" ("I contain you" - "All right, I'll notice that!"). If you look back on the documents tackled by our vector, some documents are linked more often from other documents. Imagine: V references A - beside the known vector A,D,X,Z there is another implicit vector A,V,X,Z (since A does not reference V, you will only retrieve this vector if started searching from Z or if iterating through all relatives collections along the given vector). After all, we may take all tackled documents plus documents on vector A,D,X,Z: this makes up A,C,D,F,G,H,U,V,W,X,Z. Mixed on one page, sorted and arranged by number of repeated relations, we get a view on the contextual network of a subject described by the vector.<br />
+<br />
+Linking deeper<br />
+If we start displaying a vector, we only "drill down" one level: relations besides the vector reside in the background, only elements residing on the vector itself will be dsplayed. If we drill down one more level, all references are displayed which belong to elements on the vector, but do not belong to the vector itself. One level deeper again, we look for all relatives referenced by elements one level up... of course, each clickthrough starting with some document and ending somewhere else describes the path between A and Z, hopping from URL to URL. <br />
+<br />
+In MCOM, you conveniently display it all on one page, no clickthroughs on websites. Instead: database-style drilling into content, based on levels of "relation depth", documents describing individual context through combination of micro content elements. <br />
+<br />
+Using Vectors<br />
+Vectors are paths leading through contextual networks. These networks are made of nodes of information, described by the MCO. Each node may be opened and will display new nodes. It is not neccessary to think of a "real path" leading from information A to information Z; instead, within the MCOM, it is possible to regard any collection of MIME based micro content as a vector. Just ask each element for its relatives, and drill down to the underlying context.<br />
+<br />
+Bloglands...<br />
+In practical terms: this model cries for example usage with common weblog and content management systems. Microcontent as generated by those systems is perfect: it is full of links to external ressources, it consists of tagged structures expressable in MCOM, messaging between systems is widely supported, permalinks are a common way of retrieving unique microcontent elements (the reasons why examples tend to be entries from weblogs). Remember, an entry may contain a full-blown webplication, script generating a collection of MCO... move away from categories and comments, rather add a MCO to your weblog and link it to the respective thread (and to any other interesting resource). And don't forget to message the remote MCO about that ;-)<br />
+<br />
+Resume<br />
+Constructing an MCOM object will result in an object which contains MIME based data and collections of metadata, at least on the object's location and MIME type. Additionally, a special collection named "relatives" contains information (URLs) on related documents which are not directly linked from the MIME data. This collection may be updated from MCOM objects linking to it, either from MIME data or relatives collection. This is done by using "update", one of three basic methods: "init" initially loads a MCO into a document, "expand" expands a node in a MCO's contextual network. While the displaying MCO is rendered by the client'S browser, object data is delivered by a simple serverside controller. Appropiate properties of the MCO are rendered and displayed as nodes within the DOM to simplyfy the view. &nbsp;AJAX techniques help retrieve and display semantical vectors and their resulting trees. MCOM integrates with MVC and DOM, so all objects can be expressed in common scripting languages. <br />
+<br />
+Details on MCOM<br />
+will be published soon; the notes on MCOM in TiddlyWiki BlogScript.html contain more basic information and code, but have to be translated from german. It also discusses the MasterBlogObject (MBO). CAVE: All these are rough notes and scripts, no warranties, changes reserved, all rights reserved, use at own risk.<br />
+<br />
+XML style description of MCO<br />
+This is the minimum required to build and transfer an MCO. This no DTD, but kind of template.<br />
+{{{<br />
+&lt;document&gt;<br />
+&nbsp;&nbsp;&nbsp;&lt;header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt; this.title &lt;/title&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;URI&gt; this.URI &lt;/URI&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MessageURL&gt; this.messageURL &lt;/MessageURL&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt; this.content &lt;/body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;related&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt; this.relations(0) &lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt; this.relations(1) &lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt; this.relations(2) &lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/related&gt;<br />
+&lt;/document&gt;<br />
+}}}<br />
+Regarding the document body, [CDATA] should be used: data is not to be parsed by the XML interpreter, but what we ask the clients browser to display as a certain object within DOM.<br />
+!!Example 1<br />
+A simple hyperlink like <br />
+{{{<br />
+&lt;a href = "http://somehost/somedirectory/index.html#something"<br />
+alt= "some brief text"&gt;some description&lt;/a&gt;<br />
+}}}<br />
+will transform into the following object:<br />
+{{{<br />
+&lt;document&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;some brief text&lt;/title&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;URI&gt;http://somehost/somedirectory/index.html#something&lt;/URI&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MessageURL&gt;&lt;/MessageURL&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[CDATA]&lt;a href = "http://somehost/somedirectory/index.html#something"<br />
+&nbsp;alt= "some brief text"&gt;some description&lt;/a&gt;[/CDATA]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;related&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://object.which/links/to/this.htm&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/related&gt;<br />
+&lt;/document&gt;<br />
+}}}<br />
+!!Example 2<br />
+An image, i.e.<br />
+{{{<br />
+&lt;img src="http://somewhere/image.jpg" alt="a nice image"&gt;<br />
+}}}<br />
+will be described like this:<br />
+{{{<br />
+&lt;document&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;a nice image&lt;/title&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;URI&gt;http://somewhere/image.jpg&lt;/URI&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MessageURL&gt;&lt;/MessageURL&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[CDATA]&lt;img src="http://somewhere/image.jpg"<br />
+&nbsp;alt="a nice image"&gt;[/CDATA]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;related&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://page/contains/this/image.html&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/related&gt;<br />
+&lt;/document&gt;<br />
+}}}<br />
+Regarding the (potential huge) size of binary content, an attribute and resulting tag like {{{&lt;bodysize&gt;}}} may be required.<br />
+!!Example 3<br />
+A full entry from a weblog is converted to an MCO:<br />
+{{{<br />
+&lt;document&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;An entry in this weblog&lt;/title&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;URI&gt;http://myweblog/permalinks.php?myID=11&lt;/URI&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MessageURL&gt;http://myweblog/rpc.php?myID=11&lt;/MessageURL&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[CDATA]<br />
+&nbsp;&lt;p&gt;Oh my dear, &lt;a href="http://thissite/index.php?item=100"&gt;this entry&lt;/a&gt;<br />
+&nbsp;seems true. If I had ever read about &lt;a href="http://anysite/permalink=122"&gt;<br />
+&nbsp;at Bison'S&lt;/a&gt; before... btw. I found this image: &lt;br&gt;<br />
+&nbsp;&lt;img src="http://anway/image.jpg"&gt;&lt;/p&gt;<br />
+&nbsp;[/CDATA]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;related&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://page/contains/linktothis.html&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://thissite/index.php?item=100&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://anysite/permalink=122&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://anway/image.jpg&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/related&gt;<br />
+&lt;/document&gt;<br />
+}}}<br />
+Please notice: the array of items is added "automagically" by the controller!<br />
+For this, he conveniently tries to parse the body... and, of course, you may use a specialised controller (serverside or as part of the view) to transform http requests of properly tagged blog entries to MCOs.<br />
+<br />
+!!Example 4<br />
+Even the smallest blog provides categories... no need for this special property.<br />
+Simply use keywords as URI to create category MCOs. Add to the array of<br />
+relatives in Example 3:<br />
+{{{<br />
+&nbsp;&lt;related&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://page/contains/linktothis.html&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://thissite/index.php?item=100&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://anysite/permalink=122&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://anway/image.jpg&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;keyword&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;category&lt;/item&gt;<br />
+&nbsp;&lt;/related&gt;<br />
+}}}<br />
+Since 'http://myweblog/permalinks.php?myID=11' is the permalink to this entry, http://myweblog/rpc.php?myID=11' its API for this entry. At this time (I think ?;-)) there seems no way to use a simple convention to build queries on items 'keyword' and 'category'. By default, the controller has to deliver an object based on a translation from 'keyword, category' to appropiate entry IDs. These entries contain information about all known (at least local) entries related to 'keyword, category' on your server. So the object representing a collection of categorized MCOs for 'keyword' may be:<br />
+{{{<br />
+&lt;document&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;keyword&lt;/title&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;URI&gt;http://myweblog/permalinks.php?myID=keyword&lt;/URI&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;MessageURL&gt;http://myweblog/rpc.php?myID=keyword&lt;/MessageURL&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[CDATA]<br />
+&nbsp;&lt;p&gt;This image describes best what this category 'category' is all about:&lt;br /&gt;<br />
+&nbsp;&lt;img src="http://anway/image.jpg" /&gt;&lt;/p&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[/CDATA]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;related&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://page/contains/linktothis.html&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://anway/image.jpg&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://myweblog/permalinks.php?myID=12&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://myweblog/permalinks.php?myID=17&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://myweblog/permalinks.php?myID=19&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;item&gt;http://yourweblog/categorycontroller/category&lt;/item&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/related&gt;<br />
+&lt;/document&gt;<br />
+}}}<br />
+By default, the controller application (i.e. [[Pseudocode Controller - Beispiel]]) should search for an entry with the title 'keyword' if given a non-numerical ID.<br />
+<br />
+!! Active Blog Objects (ABO) as MCOM implemetation<br />
+* let you collect and combine information from a variety of sources<br />
+* help you find and display related content<br />
+* work with any permalink capable CMS and weblog system<br />
+* fully integrate into DOM and MVC<br />
+* let you create portals and blogs from scratch, based on semantics (related content) from various sources<br />
+* show you which other objects link to an ABO<br />
+* provide a full API and messaging format<br />
+* let you create drill down pages and document trees<br />
+<br />
+By using ActiveBlogObjects, instead of putting pieces of text together on one page and loading another fulll page by clicking some link you start combining pieces of microcontent by referring them by their permalink. If the user loads a page, he receives a collection of microcontent objects from various sources. Then he might drill down into the contenxt of each object without ever reloading the main page or leaving the page where he had started from.<br />
+<br />
+ABO consists of two main parts: a JavaScript for the client, and specialiced controllers written in PHP for the server. Additionally, ActiveBlogObjects provide a wrapper and text parser class to transform sources which do not even make implicit use of MCOM.<br />
+<br />
+ActiveBlogObjects is a proof-of-concept implementation of the MicroContentObjectModel. Since weblogs are perfect sources of semantical linked microcontent objects, full of links and based on a common model of blog entries. Most of them allready provide a standard port for messaging (trackback) support permalinks and are capable of appropiate tagging single entries.<br />
+<br />
+!!How to use ActiveBlogObjects?<br />
+All you have to do is sending the JavaScript and a set of parameters (URLs of the MCOs you want to display initially) to your visitor, along with the header of your index.html. Second, have the appropiate controller(s) for the CMS(s) installed on your site(s). Third, create stylesheets for your views, create your own interface, view document trees and find paths between documents. Simply display together what is related. And save the information of being diplayed along with the information to be displayed. Ask objects about their relatives, and start to build networks of sematically linked microcontent.<br />
+<br />
+<br />
+!!Programmers only?<br />
+Noop. While it is quite usefull to understand the concepts of related microcontent and MCOM (which both are no rocket sciences nor require a degre in informatics), only little technical knowledge is needed to use it: simply add URLs to your entries, using the field for trackbacks. Getting a little help on designing interfaces is recommended. By default, you can simply insert the JavaScript part into an empty entry, add the permalinks you want to have on the starting page, and the script will overlay the containing page with a switchable interface to this MCO's context. ABO IS ENTIRELY ALPHA VERSIONED!<br />
+<br />
+</span>
+</body>
+</html>
